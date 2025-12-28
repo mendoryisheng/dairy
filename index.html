@@ -4,12 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="多尺度种养结合的物能循环与培肥增产决策支持系统">
-    <meta name="keywords" content="种养结合,物能循环,培肥增产,奶牛养殖,温室气体排放,养分循环">
-    <meta name="author" content="Angela Bryant">
-    <title>多尺度种养结合的物能循环与培肥增产决策系统</title>
-    
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐄</text></svg>">
+    <title>种养结合系统物能循环与增产增效决策系统</title>
     
     <style>
         * {
@@ -328,94 +323,6 @@
             color: #2c3e50;
         }
         
-        .scatter-chart {
-            position: relative;
-            height: 300px;
-            padding: 30px 40px 40px 60px;
-        }
-        
-        .scatter-canvas {
-            width: 100%;
-            height: 100%;
-            border-left: 2px solid #ddd;
-            border-bottom: 2px solid #ddd;
-            position: relative;
-        }
-        
-        .scatter-point {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #667eea;
-            opacity: 0.6;
-            transition: all 0.3s;
-        }
-        
-        .scatter-point:hover {
-            opacity: 1;
-            transform: scale(1.5);
-        }
-        
-        .axis-label {
-            position: absolute;
-            font-size: 12px;
-            color: #7f8c8d;
-        }
-        
-        .x-axis-label {
-            bottom: 5px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        
-        .y-axis-label {
-            left: 5px;
-            top: 50%;
-            transform: translateY(-50%) rotate(-90deg);
-        }
-        
-        .info-box {
-            background: #e3f2fd;
-            border-left: 4px solid #2196f3;
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 20px;
-        }
-        
-        .info-box h4 {
-            color: #1976d2;
-            margin-bottom: 10px;
-        }
-        
-        .info-box ul {
-            list-style: none;
-            padding-left: 0;
-        }
-        
-        .info-box li {
-            color: #0d47a1;
-            margin-bottom: 8px;
-            padding-left: 20px;
-            position: relative;
-        }
-        
-        .info-box li:before {
-            content: "•";
-            position: absolute;
-            left: 5px;
-            font-weight: bold;
-        }
-        
-        .footer {
-            text-align: center;
-            padding: 20px;
-            margin-top: 30px;
-            color: white;
-            font-size: 14px;
-            opacity: 0.9;
-        }
-        
         .flow-chart {
             padding: 20px;
             position: relative;
@@ -483,35 +390,64 @@
             font-weight: bold;
             transition: width 0.5s ease;
         }
+        
+        .info-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .info-box h4 {
+            color: #1976d2;
+            margin-bottom: 10px;
+        }
+        
+        .info-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .info-box li {
+            color: #0d47a1;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .info-box li:before {
+            content: "•";
+            position: absolute;
+            left: 5px;
+            font-weight: bold;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+            color: white;
+            font-size: 14px;
+            opacity: 0.9;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- 标题 -->
         <div class="header">
-            <h1>🐄 多尺度种养结合的物能循环与培肥增产决策系统</h1>
-            <p>基于CLEANER模型的全链条温室气体排放与养分流动分析平台</p>
+            <h1>🐄 种养结合系统物能循环与增产增效决策系统</h1>
+            <p>基于CLEANER模型和真实参数的精确计算 | Ym=6.5% | OMD=62.9% | B0=130 m³/t VS</p>
         </div>
 
         <div class="main-grid">
             <!-- 左侧：输入参数 -->
             <div>
-                <!-- 基础信息 -->
                 <div class="card">
-                    <div class="card-title">
-                        <span>📊</span>基础信息
-                    </div>
+                    <div class="card-title"><span>📊</span>基础信息</div>
                     <div class="form-group">
                         <label class="form-label">奶牛数量（头）</label>
                         <input type="number" id="cattleNumber" class="form-input" value="100" min="1" max="10000" onchange="calculate()">
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">养殖规模</label>
-                        <select id="farmScale" class="form-select" onchange="calculate()">
-                            <option value="small">小规模 (&lt;50头)</option>
-                            <option value="medium" selected>中规模 (50-200头)</option>
-                            <option value="large">大规模 (&gt;200头)</option>
-                        </select>
                     </div>
                     <div class="form-group">
                         <label class="form-label">气候区</label>
@@ -523,86 +459,68 @@
                     </div>
                 </div>
 
-                <!-- 日粮配方 -->
                 <div class="card">
-                    <div class="card-title">
-                        <span>🌾</span>日粮配方
-                    </div>
+                    <div class="card-title"><span>🌾</span>日粮配方</div>
                     <div class="form-group">
                         <label class="form-label">粗蛋白含量：<span id="cpValue">16.0</span>%</label>
                         <div class="slider-container">
                             <input type="range" id="crudeProtein" class="slider" min="12" max="20" step="0.5" value="16" oninput="updateSlider('cp'); calculate()">
-                            <div class="slider-label">
-                                <span>12%</span>
-                                <span>20%</span>
-                            </div>
+                            <div class="slider-label"><span>12%</span><span>20%</span></div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">饲料能量：<span id="energyValue">180</span> MJ/天</label>
+                        <label class="form-label">干物质采食量：<span id="dmiValue">20</span> kg/天</label>
                         <div class="slider-container">
-                            <input type="range" id="feedEnergy" class="slider" min="150" max="220" step="5" value="180" oninput="updateSlider('energy'); calculate()">
-                            <div class="slider-label">
-                                <span>150 MJ</span>
-                                <span>220 MJ</span>
-                            </div>
+                            <input type="range" id="dmiIntake" class="slider" min="15" max="25" step="0.5" value="20" oninput="updateSlider('dmi'); calculate()">
+                            <div class="slider-label"><span>15 kg</span><span>25 kg</span></div>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="form-label">精料比例：<span id="concentrateValue">50</span>%</label>
+                        <label class="form-label">产奶量：<span id="milkValue">25</span> kg/天</label>
                         <div class="slider-container">
-                            <input type="range" id="concentrateRatio" class="slider" min="30" max="70" step="5" value="50" oninput="updateSlider('concentrate'); calculate()">
-                            <div class="slider-label">
-                                <span>30%</span>
-                                <span>70%</span>
-                            </div>
+                            <input type="range" id="milkYield" class="slider" min="15" max="40" step="1" value="25" oninput="updateSlider('milk'); calculate()">
+                            <div class="slider-label"><span>15 kg</span><span>40 kg</span></div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 圈舍管理 -->
                 <div class="card">
-                    <div class="card-title">
-                        <span>🏠</span>圈舍管理
-                    </div>
+                    <div class="card-title"><span>🏠</span>圈舍管理</div>
                     <div class="form-group">
                         <label class="form-label">地板类型</label>
                         <select id="floorType" class="form-select" onchange="calculate()">
-                            <option value="solid" selected>实心地板</option>
-                            <option value="slatted">漏缝地板</option>
-                            <option value="litter">垫料系统</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label">清粪方式</label>
-                        <select id="manureSystem" class="form-select" onchange="calculate()">
-                            <option value="manual">人工清理</option>
-                            <option value="scraper" selected>机械刮粪</option>
-                            <option value="flush">水冲洗</option>
+                            <option value="solid" selected>实心地板 (NH3=23%)</option>
+                            <option value="slatted">漏缝地板 (NH3=15%)</option>
+                            <option value="litter">垫料系统 (NH3=8%)</option>
                         </select>
                     </div>
                 </div>
 
-                <!-- 粪污处理 -->
                 <div class="card">
-                    <div class="card-title">
-                        <span>♻️</span>粪污处理
-                    </div>
+                    <div class="card-title"><span>♻️</span>粪污处理</div>
                     <div class="form-group">
                         <label class="form-label">储存方式</label>
                         <select id="storageType" class="form-select" onchange="calculate()">
-                            <option value="liquid" selected>液态储存</option>
-                            <option value="solid">固态储存</option>
-                            <option value="covered">覆盖储存</option>
+                            <option value="liquid" selected>敞口液态 (NH3=17%)</option>
+                            <option value="solid">固态堆存 (NH3=17%)</option>
+                            <option value="covered">覆盖储存 (NH3=3.4%)</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label class="form-label">处理技术</label>
                         <select id="treatmentMethod" class="form-select" onchange="calculate()">
                             <option value="storage" selected>常规储存</option>
-                            <option value="anaerobic">厌氧发酵</option>
-                            <option value="compost">堆肥处理</option>
+                            <option value="compost">堆肥处理 (NH3=25.8%)</option>
+                            <option value="anaerobic">厌氧发酵 (NH3=5.1%)</option>
                             <option value="direct">直接还田</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">还田方式</label>
+                        <select id="fieldMethod" class="form-select" onchange="calculate()">
+                            <option value="surface" selected>表面撒施 (NH3=15%)</option>
+                            <option value="injection">注入式 (NH3=3%)</option>
+                            <option value="compost">腐熟后还田 (NH3=1%)</option>
                         </select>
                     </div>
                 </div>
@@ -610,7 +528,6 @@
 
             <!-- 右侧：结果展示 -->
             <div>
-                <!-- 关键指标 -->
                 <div class="metrics-grid">
                     <div class="metric-card red">
                         <div class="metric-label">总CH₄排放</div>
@@ -644,9 +561,7 @@
                     </div>
                 </div>
 
-                <!-- 图表网格 -->
                 <div class="chart-grid">
-                    <!-- CH4排放阶段占比 -->
                     <div class="card">
                         <div class="card-title">📊 CH₄排放各阶段占比</div>
                         <div class="pie-chart">
@@ -670,75 +585,50 @@
                         </div>
                     </div>
 
-                    <!-- 气体排放对比 -->
                     <div class="card">
                         <div class="card-title">📊 各类气体排放量对比</div>
-                        <div class="bar-chart" id="gasBarChart">
-                            <!-- 动态生成 -->
-                        </div>
+                        <div class="bar-chart" id="gasBarChart"></div>
                     </div>
                 </div>
 
-                <!-- 养分流动分析 -->
                 <div class="card">
                     <div class="card-title">🔄 养分流动与转化效率</div>
                     <div class="flow-chart">
                         <div class="flow-item">
                             <div class="flow-box" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
-                                饲料养分摄入<br>
-                                <span id="nIntakeFlow">0</span> kg N | <span id="pIntakeFlow">0</span> kg P
+                                饲料养分摄入<br><span id="nIntakeFlow">0</span> kg N | <span id="pIntakeFlow">0</span> kg P
                             </div>
                             <div class="flow-arrow">→</div>
                             <div class="flow-box" style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
-                                产品留存<br>
-                                <span id="nProductFlow">0</span> kg N | <span id="pProductFlow">0</span> kg P
+                                产品留存<br><span id="nProductFlow">0</span> kg N | <span id="pProductFlow">0</span> kg P
                             </div>
                         </div>
                         <div class="flow-item">
                             <div class="flow-box" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
-                                粪尿排泄<br>
-                                <span id="nExcretionFlow">0</span> kg N | <span id="pExcretionFlow">0</span> kg P
+                                粪尿排泄<br><span id="nExcretionFlow">0</span> kg N | <span id="pExcretionFlow">0</span> kg P
                             </div>
                             <div class="flow-arrow">→</div>
                             <div class="flow-box" style="background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);">
-                                气态损失<br>
-                                <span id="nLossFlow">0</span> kg N
+                                气态损失<br><span id="nLossFlow">0</span> kg N
                             </div>
                         </div>
                         <div class="flow-item">
                             <div class="flow-box" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);">
-                                可还田养分<br>
-                                <span id="nFieldFlow">0</span> kg N | <span id="pFieldFlow">0</span> kg P
+                                可还田养分<br><span id="nFieldFlow">0</span> kg N | <span id="pFieldFlow">0</span> kg P
                             </div>
                             <div class="flow-arrow">→</div>
                             <div class="flow-box" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);">
-                                替代化肥<br>
-                                <span id="fertilizerSaved">0</span> kg
+                                替代化肥<br><span id="fertilizerSaved">0</span> kg
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 减排潜力对比 -->
                 <div class="card">
                     <div class="card-title">⚡ 不同处理方式减排潜力对比</div>
-                    <div class="comparison-chart" id="comparisonChart">
-                        <!-- 动态生成 -->
-                    </div>
+                    <div class="comparison-chart" id="comparisonChart"></div>
                 </div>
 
-                <!-- 环境影响评估 -->
-                <div class="card">
-                    <div class="card-title">🌍 环境影响综合评估</div>
-                    <div class="scatter-chart">
-                        <div class="scatter-canvas" id="scatterCanvas">
-                            <div class="axis-label x-axis-label">氮利用效率 (%)</div>
-                            <div class="axis-label y-axis-label">CH₄排放强度 (kg/kg产品)</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 详细数据表格 -->
                 <div class="card">
                     <div class="card-title">📋 排放与养分详情</div>
                     <table>
@@ -750,140 +640,111 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="section-header">
-                                <td colspan="3">养分排泄量</td>
-                            </tr>
-                            <tr>
-                                <td>氮排泄量</td>
-                                <td style="text-align: right;" id="nExcretion">0</td>
-                                <td>kg N/年</td>
-                            </tr>
-                            <tr>
-                                <td>磷排泄量</td>
-                                <td style="text-align: right;" id="pExcretion">0</td>
-                                <td>kg P/年</td>
-                            </tr>
-                            <tr class="section-header">
-                                <td colspan="3">温室气体排放</td>
-                            </tr>
-                            <tr>
-                                <td>肠道发酵CH₄</td>
-                                <td style="text-align: right;" id="ch4Enteric">0</td>
-                                <td>kg/年</td>
-                            </tr>
-                            <tr>
-                                <td>圈舍阶段CH₄</td>
-                                <td style="text-align: right;" id="ch4Housing">0</td>
-                                <td>kg/年</td>
-                            </tr>
-                            <tr>
-                                <td>粪污管理CH₄</td>
-                                <td style="text-align: right;" id="ch4Storage">0</td>
-                                <td>kg/年</td>
-                            </tr>
-                            <tr>
-                                <td>NH₃排放</td>
-                                <td style="text-align: right;" id="nh3Emission">0</td>
-                                <td>kg/年</td>
-                            </tr>
-                            <tr>
-                                <td>N₂O排放</td>
-                                <td style="text-align: right;" id="n2oEmission">0</td>
-                                <td>kg/年</td>
-                            </tr>
-                            <tr class="section-header">
-                                <td colspan="3">可还田养分</td>
-                            </tr>
-                            <tr>
-                                <td>可还田氮量</td>
-                                <td style="text-align: right;" id="nField">0</td>
-                                <td>kg N/年</td>
-                            </tr>
-                            <tr>
-                                <td>可还田磷量</td>
-                                <td style="text-align: right;" id="pField">0</td>
-                                <td>kg P/年</td>
-                            </tr>
+                            <tr class="section-header"><td colspan="3">养分排泄量</td></tr>
+                            <tr><td>氮排泄量</td><td style="text-align: right;" id="nExcretion">0</td><td>kg N/年</td></tr>
+                            <tr><td>磷排泄量</td><td style="text-align: right;" id="pExcretion">0</td><td>kg P/年</td></tr>
+                            <tr class="section-header"><td colspan="3">温室气体排放</td></tr>
+                            <tr><td>肠道发酵CH₄</td><td style="text-align: right;" id="ch4Enteric">0</td><td>kg/年</td></tr>
+                            <tr><td>圈舍阶段CH₄</td><td style="text-align: right;" id="ch4Housing">0</td><td>kg/年</td></tr>
+                            <tr><td>粪污管理CH₄</td><td style="text-align: right;" id="ch4Storage">0</td><td>kg/年</td></tr>
+                            <tr><td>NH₃排放</td><td style="text-align: right;" id="nh3Emission">0</td><td>kg/年</td></tr>
+                            <tr><td>N₂O排放</td><td style="text-align: right;" id="n2oEmission">0</td><td>kg/年</td></tr>
+                            <tr class="section-header"><td colspan="3">可还田养分</td></tr>
+                            <tr><td>可还田氮量</td><td style="text-align: right;" id="nField">0</td><td>kg N/年</td></tr>
+                            <tr><td>可还田磷量</td><td style="text-align: right;" id="pField">0</td><td>kg P/年</td></tr>
                         </tbody>
                     </table>
                 </div>
 
-                <!-- 说明信息 -->
                 <div class="info-box">
                     <h4>ℹ️ 系统说明</h4>
                     <ul>
-                        <li>本系统基于CLEANER模型和IPCC Tier 2方法学构建</li>
-                        <li>实现多尺度种养结合的物质能量循环全过程模拟</li>
-                        <li>排放计算涵盖肠道发酵、圈舍、储存、处理全链条</li>
-                        <li>养分利用效率反映了动物将饲料养分转化为产品的能力</li>
-                        <li>可通过优化日粮配方、改进圈舍管理和采用减排技术降低排放</li>
-                        <li>系统支持培肥增产决策，评估粪肥还田替代化肥的潜力</li>
+                        <li>本系统基于您的Excel参数文件构建，使用真实排放因子</li>
+                        <li>肠道发酵：Ym=6.5%, OMD=62.9%, 牛奶含N=0.521%</li>
+                        <li>圈舍排放：实心地板NH3=23%, 漏缝NH3=15%, 垫料NH3=8%</li>
+                        <li>储存排放：液态NH3=17%, 覆盖NH3=3.4%</li>
+                        <li>还田排放：表施NH3=15%, 注入NH3=3%, 腐熟NH3=1%</li>
+                        <li>沼气产生潜力B0=130 m³/t VS (IPCC亚洲默认值)</li>
                     </ul>
                 </div>
             </div>
         </div>
         
-        <!-- 页脚 -->
         <div class="footer">
-            © 2024 多尺度种养结合的物能循环与培肥增产决策系统 | 基于CLEANER模型
+            © 2024 种养结合系统物能循环与增产增效决策系统 | 基于CLEANER模型和真实参数
         </div>
     </div>
 
     <script>
-        // 排放因子参数
+        // 基于Excel文件的真实参数
         const params = {
-            entericYm: {
-                low: 5.5,
-                medium: 6.5,
-                high: 7.0
+            dairy: {
+                Ym: 6.5,        // 甲烷转化因子 %
+                OMD: 62.9,      // 有机物消化率 %
+                UE: 4,          // 尿能 %
+                B0: 130,        // 沼气产生潜力 m³/t VS
+                ManureN: 0.38,  // 粪便含氮率 %
+                VS_ratio: 0.5   // C/VS比例
             },
-            housingEF: {
-                solid: { NH3: 15, N2O: 0.5, CH4_VS: 3 },
-                slatted: { NH3: 18, N2O: 0.3, CH4_VS: 4 },
-                litter: { NH3: 12, N2O: 0.8, CH4_VS: 5 }
+            milk: {
+                N: 0.521,       // 牛奶含氮率 % (从MilkNut计算的平均值)
+                P: 0.088,       // 牛奶含磷率 %
+                fat: 3.99       // 乳脂率 %
+            },
+            floorEF: {
+                solid: { NH3: 23.0, N2O: 0.5, CH4_VS: 3 },
+                slatted: { NH3: 15.0, N2O: 0.5, CH4_VS: 4 },
+                litter: { NH3: 8.0, N2O: 0.5, CH4_VS: 5 }
+            },
+            treatmentEF: {
+                compost: { NH3: 25.84, N2O: 0.26, CH4_reduction: 80 },
+                anaerobic: { NH3: 5.1, N2O: 0.5, CH4_reduction: -20 },
+                storage: { NH3: 0, N2O: 0, CH4_reduction: 0 }
+            },
+            storageEF: {
+                liquid: { NH3: 17.0, N2O: 0.5 },
+                solid: { NH3: 17.0, N2O: 0.5 },
+                covered: { NH3: 3.4, N2O: 0.5 }
+            },
+            fieldEF: {
+                surface: { NH3: 15.0, N2O: 0.64 },
+                injection: { NH3: 3.0, N2O: 1.27 },
+                compost: { NH3: 1.0, N2O: 1.0 }
             },
             MCF: {
-                liquid: { cool: 10, temperate: 17, warm: 27 },
-                solid: { cool: 1, temperate: 2, warm: 4 },
-                covered: { cool: 8, temperate: 14, warm: 22 }
-            },
-            treatmentReduction: {
-                storage: { CH4: 0, NH3: 0, N2O: 0 },
-                anaerobic: { CH4: -20, NH3: 50, N2O: 30 },
-                compost: { CH4: 80, NH3: 30, N2O: 20 },
-                direct: { CH4: 95, NH3: 60, N2O: 50 }
+                cool: { liquid: 10, solid: 1, covered: 8 },
+                temperate: { liquid: 17, solid: 2, covered: 14 },
+                warm: { liquid: 27, solid: 4, covered: 22 }
             }
         };
 
-        // 更新滑块显示
         function updateSlider(type) {
             if (type === 'cp') {
                 document.getElementById('cpValue').textContent = document.getElementById('crudeProtein').value;
-            } else if (type === 'energy') {
-                document.getElementById('energyValue').textContent = document.getElementById('feedEnergy').value;
-            } else if (type === 'concentrate') {
-                document.getElementById('concentrateValue').textContent = document.getElementById('concentrateRatio').value;
+            } else if (type === 'dmi') {
+                document.getElementById('dmiValue').textContent = document.getElementById('dmiIntake').value;
+            } else if (type === 'milk') {
+                document.getElementById('milkValue').textContent = document.getElementById('milkYield').value;
             }
         }
 
-        // 核心计算函数
         function calculate() {
             const cattleNumber = parseFloat(document.getElementById('cattleNumber').value);
             const climateZone = document.getElementById('climateZone').value;
             const crudeProtein = parseFloat(document.getElementById('crudeProtein').value);
-            const feedEnergy = parseFloat(document.getElementById('feedEnergy').value);
+            const dmiIntake = parseFloat(document.getElementById('dmiIntake').value);
+            const milkYield = parseFloat(document.getElementById('milkYield').value);
             const floorType = document.getElementById('floorType').value;
             const storageType = document.getElementById('storageType').value;
             const treatmentMethod = document.getElementById('treatmentMethod').value;
+            const fieldMethod = document.getElementById('fieldMethod').value;
 
-            // 1. 养分摄入和排泄
-            const dryMatterIntake = 20;
-            const nIntake = (dryMatterIntake * crudeProtein / 100) / 6.25;
-            const pIntake = dryMatterIntake * 0.45 / 100;
+            // 1. 养分摄入和排泄 (基于真实参数)
+            const nIntake = (dmiIntake * crudeProtein / 100) / 6.25;
+            const pIntake = dmiIntake * 0.45 / 100;
             
-            const milkYield = 25;
-            const milkN = milkYield * 0.53 / 100;
-            const milkP = milkYield * 0.095 / 100;
+            const milkN = milkYield * params.milk.N / 100;
+            const milkP = milkYield * params.milk.P / 100;
             
             const nExcretion = nIntake - milkN;
             const pExcretion = pIntake - milkP;
@@ -891,39 +752,49 @@
             const NUE = (milkN / nIntake) * 100;
             const PUE = (milkP / pIntake) * 100;
             
-            // 2. 肠道发酵CH4
-            const ymValue = crudeProtein < 15 ? params.entericYm.low : 
-                           crudeProtein < 18 ? params.entericYm.medium : params.entericYm.high;
-            const GE = feedEnergy / 0.65;
-            const entericCH4 = (GE * ymValue / 100) / 55.65;
+            // 2. 肠道发酵CH4 (使用真实Ym值)
+            const GE = dmiIntake * 18.45;  // MJ/天
+            const entericCH4 = (GE * params.dairy.Ym / 100) / 55.65;
             
             // 3. VS排泄和圈舍排放
-            const vsExcretion = dryMatterIntake * 0.8 * 0.85;
-            const housingNH3 = nExcretion * params.housingEF[floorType].NH3 / 100;
-            const housingN2O = nExcretion * params.housingEF[floorType].N2O / 100;
-            const housingCH4_VS = vsExcretion * params.housingEF[floorType].CH4_VS / 100;
+            const vsExcretion = dmiIntake * 0.8 * (100 - params.dairy.OMD) / 100 + 
+                               GE * params.dairy.UE / 100 / 18.45;
             
-            // 4. 储存/处理阶段排放
-            const B0 = 0.24;
-            const mcfValue = params.MCF[storageType][climateZone];
-            const storageCH4_base = vsExcretion * B0 * 0.67 * (mcfValue / 100);
+            const floorEF = params.floorEF[floorType];
+            const housingNH3 = nExcretion * floorEF.NH3 / 100;
+            const housingN2O = nExcretion * floorEF.N2O / 100;
+            const housingCH4_VS = vsExcretion * floorEF.CH4_VS / 100;
             
-            const reductionFactor = params.treatmentReduction[treatmentMethod];
-            const storageCH4 = storageCH4_base * (1 + reductionFactor.CH4 / 100);
-            const storageNH3 = (nExcretion - housingNH3) * 0.25 * (1 - reductionFactor.NH3 / 100);
-            const storageN2O = (nExcretion - housingNH3) * 0.005 * (1 - reductionFactor.N2O / 100);
+            // 4. 储存阶段排放
+            const mcfValue = params.MCF[climateZone][storageType];
+            const storageCH4_base = vsExcretion * params.dairy.B0 / 1000 * 0.67 * (mcfValue / 100);
             
-            // 5. 年化并乘以牛头数
+            const treatEF = treatmentMethod === 'storage' ? { NH3: 0, N2O: 0, CH4_reduction: 0 } : 
+                           params.treatmentEF[treatmentMethod];
+            
+            const storageCH4 = storageCH4_base * (1 + treatEF.CH4_reduction / 100);
+            
+            const storageEF = params.storageEF[storageType];
+            const storageNH3 = (nExcretion - housingNH3) * storageEF.NH3 / 100;
+            const storageN2O = (nExcretion - housingNH3) * storageEF.N2O / 100;
+            
+            // 5. 还田排放
+            const fieldEF = params.fieldEF[fieldMethod];
+            const nRemaining = nExcretion - housingNH3 - storageNH3;
+            const fieldNH3 = nRemaining * fieldEF.NH3 / 100;
+            const fieldN2O = nRemaining * fieldEF.N2O / 100;
+            
+            // 6. 年化并乘以牛头数
             const totalEntericCH4 = entericCH4 * 365 * cattleNumber;
             const totalHousingCH4 = housingCH4_VS * 365 * cattleNumber;
             const totalStorageCH4 = storageCH4 * 365 * cattleNumber;
             const totalCH4 = totalEntericCH4 + totalHousingCH4 + totalStorageCH4;
             
-            const totalNH3 = (housingNH3 + storageNH3) * 365 * cattleNumber;
-            const totalN2O = (housingN2O + storageN2O) * 365 * cattleNumber;
+            const totalNH3 = (housingNH3 + storageNH3 + fieldNH3) * 365 * cattleNumber;
+            const totalN2O = (housingN2O + storageN2O + fieldN2O) * 365 * cattleNumber;
             
-            const nRemaining = (nExcretion - housingNH3 - storageNH3) * 365 * cattleNumber;
-            const pRemaining = pExcretion * 365 * cattleNumber * 0.95;
+            const nToField = (nRemaining - fieldNH3 - fieldN2O) * 365 * cattleNumber;
+            const pToField = pExcretion * 365 * cattleNumber * 0.95;
             
             const totalNExcretion = nExcretion * 365 * cattleNumber;
             const totalPExcretion = pExcretion * 365 * cattleNumber;
@@ -933,7 +804,7 @@
             const totalNProduct = milkN * 365 * cattleNumber;
             const totalPProduct = milkP * 365 * cattleNumber;
             const totalNLoss = totalNH3 + totalN2O;
-            const fertilizerSaved = nRemaining * 3;  // 假设1kg N粪肥约等于3kg化肥
+            const fertilizerSaved = nToField * 3;
 
             // 更新显示
             document.getElementById('totalCH4').textContent = (totalCH4 / 1000).toFixed(1);
@@ -941,7 +812,7 @@
             document.getElementById('NUE').textContent = NUE.toFixed(1);
             document.getElementById('PUE').textContent = PUE.toFixed(1);
             document.getElementById('totalN2O').textContent = totalN2O.toFixed(0);
-            document.getElementById('nFieldShort').textContent = nRemaining.toFixed(0);
+            document.getElementById('nFieldShort').textContent = nToField.toFixed(0);
             
             document.getElementById('nExcretion').textContent = totalNExcretion.toFixed(0);
             document.getElementById('pExcretion').textContent = totalPExcretion.toFixed(0);
@@ -950,10 +821,9 @@
             document.getElementById('ch4Storage').textContent = totalStorageCH4.toFixed(0);
             document.getElementById('nh3Emission').textContent = totalNH3.toFixed(0);
             document.getElementById('n2oEmission').textContent = totalN2O.toFixed(0);
-            document.getElementById('nField').textContent = nRemaining.toFixed(0);
-            document.getElementById('pField').textContent = pRemaining.toFixed(0);
+            document.getElementById('nField').textContent = nToField.toFixed(0);
+            document.getElementById('pField').textContent = pToField.toFixed(0);
             
-            // 更新养分流动
             document.getElementById('nIntakeFlow').textContent = totalNIntake.toFixed(0);
             document.getElementById('pIntakeFlow').textContent = totalPIntake.toFixed(0);
             document.getElementById('nProductFlow').textContent = totalNProduct.toFixed(0);
@@ -961,18 +831,15 @@
             document.getElementById('nExcretionFlow').textContent = totalNExcretion.toFixed(0);
             document.getElementById('pExcretionFlow').textContent = totalPExcretion.toFixed(0);
             document.getElementById('nLossFlow').textContent = totalNLoss.toFixed(0);
-            document.getElementById('nFieldFlow').textContent = nRemaining.toFixed(0);
-            document.getElementById('pFieldFlow').textContent = pRemaining.toFixed(0);
+            document.getElementById('nFieldFlow').textContent = nToField.toFixed(0);
+            document.getElementById('pFieldFlow').textContent = pToField.toFixed(0);
             document.getElementById('fertilizerSaved').textContent = fertilizerSaved.toFixed(0);
 
-            // 更新图表
             drawPieChart(totalEntericCH4, totalHousingCH4, totalStorageCH4);
             drawBarChart(totalCH4, totalNH3, totalN2O);
             drawComparisonChart(totalCH4);
-            drawScatterChart(NUE, totalCH4 / (milkYield * 365 * cattleNumber));
         }
 
-        // 绘制饼图
         function drawPieChart(enteric, housing, storage) {
             const total = enteric + housing + storage;
             const entericPercent = (enteric / total * 100).toFixed(0);
@@ -997,7 +864,6 @@
             
             values.forEach((value, index) => {
                 const sliceAngle = (value / total) * 2 * Math.PI;
-                
                 ctx.beginPath();
                 ctx.moveTo(centerX, centerY);
                 ctx.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
@@ -1007,94 +873,43 @@
                 ctx.strokeStyle = 'white';
                 ctx.lineWidth = 2;
                 ctx.stroke();
-                
                 startAngle += sliceAngle;
             });
         }
 
-        // 绘制柱状图
         function drawBarChart(ch4, nh3, n2o) {
             const maxValue = Math.max(ch4, nh3, n2o);
             const container = document.getElementById('gasBarChart');
-            
             const data = [
                 { label: 'CH₄', value: ch4 },
                 { label: 'NH₃', value: nh3 },
                 { label: 'N₂O', value: n2o }
             ];
-            
             container.innerHTML = data.map(item => {
                 const height = (item.value / maxValue * 200).toFixed(0);
-                return `
-                    <div class="bar-item">
-                        <div class="bar" style="height: ${height}px;">
-                            <div class="bar-value">${item.value.toFixed(0)}</div>
-                        </div>
-                        <div class="bar-label">${item.label}</div>
-                    </div>
-                `;
+                return `<div class="bar-item"><div class="bar" style="height: ${height}px;"><div class="bar-value">${item.value.toFixed(0)}</div></div><div class="bar-label">${item.label}</div></div>`;
             }).join('');
         }
 
-        // 绘制对比图
         function drawComparisonChart(currentCH4) {
             const container = document.getElementById('comparisonChart');
             const baseline = currentCH4;
-            
             const data = [
                 { label: '当前方案', value: baseline, percent: 100 },
                 { label: '厌氧发酵', value: baseline * 0.8, percent: 80 },
-                { label: '堆肥处理', value: baseline * 0.4, percent: 40 },
-                { label: '直接还田', value: baseline * 0.2, percent: 20 }
+                { label: '堆肥处理', value: baseline * 0.2, percent: 20 },
+                { label: '覆盖储存', value: baseline * 0.6, percent: 60 }
             ];
-            
             container.innerHTML = data.map(item => `
                 <div class="comparison-row">
                     <div class="comparison-label">${item.label}</div>
                     <div class="comparison-bar-container">
-                        <div class="comparison-bar" style="width: ${item.percent}%">
-                            ${item.value.toFixed(0)} kg
-                        </div>
+                        <div class="comparison-bar" style="width: ${item.percent}%">${item.value.toFixed(0)} kg</div>
                     </div>
                 </div>
             `).join('');
         }
 
-        // 绘制散点图
-        function drawScatterChart(nue, ch4Intensity) {
-            const canvas = document.getElementById('scatterCanvas');
-            canvas.innerHTML = '<div class="axis-label x-axis-label">氮利用效率 (%)</div><div class="axis-label y-axis-label">CH₄排放强度 (kg/kg产品)</div>';
-            
-            // 模拟一些数据点
-            const points = [
-                { nue: nue, ch4: ch4Intensity }
-            ];
-            
-            // 添加参考点
-            for (let i = 0; i < 20; i++) {
-                points.push({
-                    nue: 15 + Math.random() * 25,
-                    ch4: 15 + Math.random() * 35
-                });
-            }
-            
-            points.forEach((point, index) => {
-                const x = (point.nue / 40 * 100);
-                const y = (100 - point.ch4 / 50 * 100);
-                const dot = document.createElement('div');
-                dot.className = 'scatter-point';
-                dot.style.left = x + '%';
-                dot.style.bottom = y + '%';
-                if (index === 0) {
-                    dot.style.background = '#FF6B6B';
-                    dot.style.width = '12px';
-                    dot.style.height = '12px';
-                }
-                canvas.appendChild(dot);
-            });
-        }
-
-        // 页面加载时执行初始计算
         window.onload = function() {
             calculate();
         };
