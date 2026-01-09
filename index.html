@@ -524,6 +524,34 @@
                         </select>
                     </div>
                 </div>
+<div class="card">
+    <div class="card-title"><span>🌾</span>粪肥还田与作物增产</div>
+    <div class="form-group">
+        <label class="form-label">作物类型</label>
+        <select id="cropType" class="form-select" onchange="calculate()">
+            <option value="wheat">小麦 (增产潜力高)</option>
+            <option value="maize">玉米 (增产潜力中)</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label class="form-label">种植面积（亩）</label>
+        <input type="number" id="cropArea" class="form-input" value="500" min="0" max="10000" step="50" onchange="calculate()">
+    </div>
+    <div class="form-group">
+        <label class="form-label">对照产量（kg/亩）</label>
+        <input type="number" id="baseYield" class="form-input" value="400" min="100" max="1000" step="10" onchange="calculate()">
+        <small style="color: #7f8c8d; font-size: 12px;">小麦平均404 kg/亩，玉米平均504 kg/亩</small>
+    </div>
+    <div class="form-group">
+        <label class="form-label">粪肥类型</label>
+        <select id="manureType" class="form-select" onchange="calculate()">
+            <option value="cattle_compost">牛粪堆肥 (推荐)</option>
+            <option value="cattle_manure">牛粪 (鲜)</option>
+            <option value="pig_compost">猪粪堆肥</option>
+            <option value="pig_manure">猪粪 (不推荐)</option>
+        </select>
+    </div>
+</div>
             </div>
 
             <!-- 右侧：结果展示 -->
@@ -623,6 +651,79 @@
                         </div>
                     </div>
                 </div>
+<div class="card">
+    <div class="card-title">🌱 作物增产效果预测</div>
+    <div class="metrics-grid" style="margin-bottom: 20px;">
+        <div class="metric-card green">
+            <div class="metric-label">化肥替代率</div>
+            <div class="metric-value" id="substitutionRate">0</div>
+            <div class="metric-unit">%</div>
+        </div>
+        <div class="metric-card blue">
+            <div class="metric-label">预期增产率</div>
+            <div class="metric-value" id="yieldIncreaseRate">0.0</div>
+            <div class="metric-unit">%</div>
+        </div>
+        <div class="metric-card orange">
+            <div class="metric-label">预期增产量</div>
+            <div class="metric-value" id="yieldIncrease">0</div>
+            <div class="metric-unit">kg</div>
+        </div>
+        <div class="metric-card">
+            <div class="metric-label">增产价值</div>
+            <div class="metric-value" id="yieldValue">0</div>
+            <div class="metric-unit">万元/年</div>
+        </div>
+    </div>
+    
+    <div class="comparison-chart">
+        <div class="comparison-row">
+            <div class="comparison-label" style="width: 150px;">对照产量</div>
+            <div class="comparison-bar-container">
+                <div class="comparison-bar" id="baseYieldBar" style="width: 100%; background: linear-gradient(90deg, #95a5a6, #7f8c8d);">
+                    <span id="baseYieldText">0 kg</span>
+                </div>
+            </div>
+        </div>
+        <div class="comparison-row">
+            <div class="comparison-label" style="width: 150px;">施粪肥后产量</div>
+            <div class="comparison-bar-container">
+                <div class="comparison-bar" id="treatmentYieldBar" style="width: 100%;">
+                    <span id="treatmentYieldText">0 kg</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="info-box" id="yieldAdvice" style="margin-top: 20px;">
+        <h4>💡 增产建议</h4>
+        <ul id="adviceList"></ul>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-title">💰 经济效益分析</div>
+    <table>
+        <thead>
+            <tr>
+                <th>效益项目</th>
+                <th style="text-align: right;">数值</th>
+                <th>单位</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="section-header"><td colspan="3">增产收益</td></tr>
+            <tr><td>总增产量</td><td style="text-align: right;" id="econ_totalIncrease">0</td><td>kg/年</td></tr>
+            <tr><td>增产收入</td><td style="text-align: right;" id="econ_income">0.00</td><td>万元/年</td></tr>
+            <tr class="section-header"><td colspan="3">节肥效益</td></tr>
+            <tr><td>替代化肥N量</td><td style="text-align: right;" id="econ_fertSaved">0</td><td>kg/年</td></tr>
+            <tr><td>节省化肥成本</td><td style="text-align: right;" id="econ_fertCost">0.00</td><td>万元/年</td></tr>
+            <tr class="section-header"><td colspan="3">综合效益</td></tr>
+            <tr style="font-weight: bold; background: #e8f5e9;"><td>总经济效益</td><td style="text-align: right;" id="econ_total">0.00</td><td>万元/年</td></tr>
+            <tr><td>单位面积效益</td><td style="text-align: right;" id="econ_perMu">0</td><td>元/亩/年</td></tr>
+        </tbody>
+    </table>
+</div>
 
                 <div class="card">
                     <div class="card-title">⚡ 不同处理方式减排潜力对比</div>
@@ -723,7 +824,54 @@
                 cool: { liquid: 10, solid: 1, covered: 8 },
                 temperate: { liquid: 17, solid: 2, covered: 14 },
                 warm: { liquid: 27, solid: 4, covered: 22 }
+             },  
+// 在params对象中添加作物增产参数（基于数据库分析）
+cropYield: {
+    wheat: {
+        baseYield_kgPerHa: 6068,  // 平均对照产量 kg/ha
+        baseYield_kgPerMu: 404,    // 换算为亩
+        nRate_kgPerHa: 180,        // 推荐施氮量 kg/ha
+        price: 2.5,                // 价格 元/kg
+        yieldResponse: {
+            'cattle_compost': {
+                sr_0_25: -5.2, sr_25_50: -1.8, sr_50_75: -10.1, sr_75_100: 25.5
+            },
+            'cattle_manure': { 
+                sr_0_25: -3.0, sr_25_50: -2.0, sr_50_75: -8.0, sr_75_100: 9.7
+            },
+            'pig_compost': { 
+                sr_0_25: -4.0, sr_25_50: -1.0, sr_50_75: -7.0, sr_75_100: 20.3
+            },
+            'pig_manure': { 
+                sr_0_25: -8.0, sr_25_50: -10.0, sr_50_75: -12.0, sr_75_100: -6.8
             }
+        }
+    },
+    maize: {
+        baseYield_kgPerHa: 7561,
+        baseYield_kgPerMu: 504,
+        nRate_kgPerHa: 220,
+        price: 2.2,
+        yieldResponse: {
+            'cattle_compost': {
+                sr_0_25: -2.1, sr_25_50: -12.2, sr_50_75: -7.2, sr_75_100: 10.8
+            },
+            'cattle_manure': { 
+                sr_0_25: -3.5, sr_25_50: -8.0, sr_50_75: -6.0, sr_75_100: -5.2
+            },
+            'pig_compost': { 
+                sr_0_25: -1.5, sr_25_50: -5.0, sr_50_75: -3.0, sr_75_100: 1.3
+            },
+            'pig_manure': { 
+                sr_0_25: -10.0, sr_25_50: -18.0, sr_50_75: -15.0, sr_75_100: -14.5
+            }
+        }
+    }
+},
+fertilizer: {
+    nPrice: 3.5,  // 尿素价格 元/kg N (尿素约8元/kg，含N 46%)
+    pPrice: 6.0,  // 磷肥价格 元/kg P
+}
         };
 
         function updateSlider(type) {
@@ -846,7 +994,140 @@
             drawPieChart(totalEntericCH4, totalHousingCH4, totalStorageCH4);
             drawBarChart(totalCH4, totalNH3, totalN2O);
             drawComparisonChart(totalCH4);
+// 在calculate()函数的最后，drawComparisonChart之后添加：
+
+// ========== 粪肥还田增产效果计算 ==========
+const cropType = document.getElementById('cropType').value;
+const cropArea = parseFloat(document.getElementById('cropArea').value);
+const baseYield_mu = parseFloat(document.getElementById('baseYield').value);
+const manureType = document.getElementById('manureType').value;
+
+// 转换为公顷
+const cropArea_ha = cropArea / 15;
+const baseYield_ha = baseYield_mu * 15;
+
+// 获取作物参数
+const cropParams = params.cropYield[cropType];
+
+// 计算可还田氮量（kg N/ha）
+const nToField_ha = nToField / cropArea_ha;
+
+// 计算化肥替代率
+const recommendedN = cropParams.nRate_kgPerHa;
+const substitutionRate = Math.min((nToField_ha / recommendedN) * 100, 100);
+
+// 根据替代率区间确定增产率
+let yieldIncreaseRate = 0;
+const responseData = cropParams.yieldResponse[manureType];
+
+if (substitutionRate < 25) {
+    yieldIncreaseRate = responseData.sr_0_25;
+} else if (substitutionRate < 50) {
+    yieldIncreaseRate = responseData.sr_25_50;
+} else if (substitutionRate < 75) {
+    yieldIncreaseRate = responseData.sr_50_75;
+} else {
+    yieldIncreaseRate = responseData.sr_75_100;
+}
+
+// 计算增产量
+const yieldIncrease_ha = baseYield_ha * yieldIncreaseRate / 100;
+const yieldIncrease_total = yieldIncrease_ha * cropArea_ha;
+const treatmentYield_ha = baseYield_ha + yieldIncrease_ha;
+
+// 计算经济效益
+const cropPrice = cropParams.price;
+const yieldValue = (yieldIncrease_total * cropPrice) / 10000; // 万元
+const fertSaved = nToField;
+const fertCostSaved = (fertSaved * params.fertilizer.nPrice) / 10000; // 万元
+const totalEconomicBenefit = yieldValue + fertCostSaved;
+const benefitPerMu = (totalEconomicBenefit * 10000) / cropArea;
+
+// 更新显示
+document.getElementById('substitutionRate').textContent = substitutionRate.toFixed(0);
+document.getElementById('yieldIncreaseRate').textContent = yieldIncreaseRate.toFixed(1);
+document.getElementById('yieldIncrease').textContent = yieldIncrease_total.toFixed(0);
+document.getElementById('yieldValue').textContent = yieldValue.toFixed(2);
+
+// 更新产量对比图
+const maxYield = Math.max(baseYield_ha, treatmentYield_ha);
+const baseWidth = (baseYield_ha / maxYield * 100).toFixed(0);
+const treatWidth = (treatmentYield_ha / maxYield * 100).toFixed(0);
+document.getElementById('baseYieldBar').style.width = baseWidth + '%';
+document.getElementById('baseYieldText').textContent = baseYield_ha.toFixed(0) + ' kg/ha';
+document.getElementById('treatmentYieldBar').style.width = treatWidth + '%';
+document.getElementById('treatmentYieldText').textContent = treatmentYield_ha.toFixed(0) + ' kg/ha';
+
+// 更新经济效益表格
+document.getElementById('econ_totalIncrease').textContent = yieldIncrease_total.toFixed(0);
+document.getElementById('econ_income').textContent = yieldValue.toFixed(2);
+document.getElementById('econ_fertSaved').textContent = fertSaved.toFixed(0);
+document.getElementById('econ_fertCost').textContent = fertCostSaved.toFixed(2);
+document.getElementById('econ_total').textContent = totalEconomicBenefit.toFixed(2);
+document.getElementById('econ_perMu').textContent = benefitPerMu.toFixed(0);
+
+// 生成增产建议
+generateYieldAdvice(cropType, manureType, substitutionRate, yieldIncreaseRate, nToField_ha, recommendedN);
         }
+function generateYieldAdvice(cropType, manureType, substitutionRate, yieldIncreaseRate, nToField_ha, recommendedN) {
+    const adviceList = document.getElementById('adviceList');
+    const cropName = cropType === 'wheat' ? '小麦' : '玉米';
+    const manureNames = {
+        'cattle_compost': '牛粪堆肥',
+        'cattle_manure': '牛粪',
+        'pig_compost': '猪粪堆肥',
+        'pig_manure': '猪粪'
+    };
+    
+    let advices = [];
+    
+    // 替代率评估
+    if (substitutionRate < 50) {
+        advices.push(`⚠️ 当前化肥替代率仅${substitutionRate.toFixed(0)}%，建议增加奶牛养殖规模或减少种植面积以提高替代率`);
+        advices.push(`📊 当前可还田氮量${nToField_ha.toFixed(0)} kg/ha，推荐施氮量${recommendedN} kg/ha`);
+    } else if (substitutionRate < 75) {
+        advices.push(`⚠️ 当前化肥替代率${substitutionRate.toFixed(0)}%处于中等水平，建议提升至75%以上以获得更好增产效果`);
+    } else {
+        advices.push(`✅ 当前化肥替代率${substitutionRate.toFixed(0)}%处于高水平，增产效果最佳`);
+    }
+    
+    // 增产效果评估
+    if (yieldIncreaseRate > 15) {
+        advices.push(`🌟 预期增产率${yieldIncreaseRate.toFixed(1)}%，增产效果优秀！`);
+    } else if (yieldIncreaseRate > 5) {
+        advices.push(`✓ 预期增产率${yieldIncreaseRate.toFixed(1)}%，增产效果良好`);
+    } else if (yieldIncreaseRate > 0) {
+        advices.push(`⚠️ 预期增产率${yieldIncreaseRate.toFixed(1)}%，增产效果一般，建议优化管理`);
+    } else {
+        advices.push(`❌ 预期减产${Math.abs(yieldIncreaseRate).toFixed(1)}%，建议调整方案`);
+    }
+    
+    // 粪肥类型建议
+    if (cropType === 'wheat') {
+        if (manureType === 'cattle_compost') {
+            advices.push(`⭐ ${manureNames[manureType]}是小麦的最佳选择，高替代率下可增产20-30%`);
+        } else if (manureType === 'pig_manure') {
+            advices.push(`⚠️ 不推荐小麦使用${manureNames[manureType]}，建议改用牛粪堆肥或猪粪堆肥`);
+        } else {
+            advices.push(`✓ ${manureNames[manureType]}对小麦有一定增产效果`);
+        }
+    } else {
+        if (manureType === 'cattle_compost') {
+            advices.push(`⭐ ${manureNames[manureType]}是玉米的推荐选择，高替代率下可增产10%左右`);
+        } else if (manureType === 'pig_manure') {
+            advices.push(`❌ 强烈不推荐玉米使用${manureNames[manureType]}，各替代率下均减产`);
+        }
+    }
+    
+    // 管理建议
+    if (substitutionRate >= 75 && yieldIncreaseRate > 0) {
+        advices.push(`💡 建议：充分腐熟后还田，基肥为主，播前2-4周施用`);
+    } else if (substitutionRate < 75) {
+        advices.push(`💡 建议：可配合少量速效化肥，确保作物早期养分供应`);
+    }
+    
+    adviceList.innerHTML = advices.map(advice => `<li>${advice}</li>`).join('');
+}
 
         function drawPieChart(enteric, housing, storage) {
             const total = enteric + housing + storage;
